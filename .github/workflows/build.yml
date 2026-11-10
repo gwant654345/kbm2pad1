@@ -1,0 +1,19 @@
+name: Build KBM2Pad exe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install vgamepad pynput pyinstaller
+      - run: pyinstaller --onefile --noconsole --collect-all vgamepad --name KBM2Pad kbm2pad.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KBM2Pad-exe
+          path: dist/KBM2Pad.exe
